@@ -1,3 +1,12 @@
+### Changelog
+
+- ts-react-demo - https://ant.design/docs/react/use-in-typescript
+- npmrc package-lock=false - https://jsproxy.ga/-----https://codeburst.io/disabling-package-lock-json-6be662f5b97d
+- react-router - https://reacttraining.com/react-router/web/guides/quick-start
+- ts react eslint prettier autofix for vscode - https://jsproxy.ga/-----https://www.robertcooper.me/using-eslint-and-prettier-in-a-typescript-project
+
+---
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
