@@ -2,13 +2,13 @@
   text-align: center;
 }
 
-.Hello-logo {
+.HelloLogo {
   animation: Hello-logo-spin infinite 20s linear;
   height: 40vmin;
   pointer-events: none;
 }
 
-.Hello-header {
+.HelloHeader {
   background-color: #282c34;
   min-height: 100vh;
   display: flex;
@@ -19,7 +19,7 @@
   color: white;
 }
 
-.Hello-link {
+.HelloLink {
   color: #61dafb;
 }
 

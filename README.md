@@ -4,6 +4,7 @@
 - npmrc package-lock=false - https://jsproxy.ga/-----https://codeburst.io/disabling-package-lock-json-6be662f5b97d
 - react-router - https://reacttraining.com/react-router/web/guides/quick-start
 - ts react eslint prettier autofix for vscode - https://jsproxy.ga/-----https://www.robertcooper.me/using-eslint-and-prettier-in-a-typescript-project
+- css modules - https://facebook.github.io/create-react-app/docs/adding-a-css-modules-stylesheet
 
 ---
 
