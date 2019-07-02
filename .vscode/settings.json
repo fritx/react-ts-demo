@@ -1,4 +1,12 @@
 {
+  "files.exclude": {
+    "node_modules": true,
+  },
+
+  "files.associations": {
+    ".npmrc": "dotenv",
+  },
+
   "eslint.autoFixOnSave": true,
   "eslint.validate": [
     "javascript",
