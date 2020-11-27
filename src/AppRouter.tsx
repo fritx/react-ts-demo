@@ -3,7 +3,7 @@ import React from 'react';
 import About from './About';
 import Hello from './Hello';
 
-function AppRouter() {
+const AppRouter: React.FC = () => {
   return (
     <Router>
       <Route path="/" exact component={Hello} />
@@ -11,6 +11,6 @@ function AppRouter() {
       <Route path="/about" component={About} />
     </Router>
   );
-}
+};
 
 export default AppRouter;
