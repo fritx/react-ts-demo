@@ -2,7 +2,7 @@ import React from 'react';
 import logo from './logo.svg';
 import styles from './Hello.module.css';
 
-const Hello: React.FC = () => {
+export const Hello: React.FC = () => {
   return (
     <div className={styles.Hello}>
       <header className={styles.HelloHeader}>
@@ -22,5 +22,3 @@ const Hello: React.FC = () => {
     </div>
   );
 };
-
-export default Hello;
