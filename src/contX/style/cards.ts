@@ -15,13 +15,13 @@ export const CardsArea = styled(FullFillWrapper)`
   height: calc(100% - ${cardHeight}px);
 `;
 
-export const CardWrapper = styled.div<Card>`
+export const CardWrapper = styled.div<{ card: Card }>`
   position: absolute;
-  left: ${(props) => `${props.position.x * 100}%`};
-  top: ${(props) => `${props.position.y * 100}%`};
+  left: ${(props) => `${props.card.position.x * 100}%`};
+  top: ${(props) => `${props.card.position.y * 100}%`};
   width: ${cardWidth}px;
   height: ${cardHeight}px;
-  background-color: ${(props) => props.backColor};
+  background-color: ${(props) => props.card.backColor};
   padding: 16px;
   box-sizing: border-box;
 `;

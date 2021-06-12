@@ -1,9 +1,8 @@
-import constate from 'constate';
 import produce, { Draft } from 'immer';
-import { useState } from 'react';
-import { BaseAction } from './base';
+import { modelHelper } from './modelHelper';
 
 export interface Card {
+  id: number; // 0~1
   title: string;
   position: {
     x: number; // 0~1
@@ -14,54 +13,77 @@ export interface Card {
 
 enum CardsActionType {
   addCard = 'addCard',
+  moveCard = 'moveCard',
 }
 
-interface AddCardAction extends BaseAction {
+interface AddCardAction {
   type: CardsActionType.addCard;
   payload: Card;
 }
+interface MoveCardAction {
+  type: CardsActionType.moveCard;
+  payload: Pick<Card, 'id' | 'position'>;
+}
+type CardsAction = AddCardAction | MoveCardAction; // TODO more actions
 
 interface CardsState {
   cards: Card[];
 }
 
-export type CardsAction = AddCardAction; // TODO more actions
-
-export const getInitialState = (): CardsState => ({
+const getInitialState = (): CardsState => ({
   cards: [],
 });
 
-let state = getInitialState();
+const validPosition = (position: Card['position']) => {
+  return {
+    x: Math.max(0, Math.min(position.x, 1)),
+    y: Math.max(0, Math.min(position.y, 1)),
+  };
+};
 
-export const getState = (): CardsState => state;
-
-let setState: React.Dispatch<React.SetStateAction<CardsState>>;
+const validPayload = <T extends CardsAction['payload']>(payload: T): T => {
+  if (payload && payload.position) {
+    return {
+      ...payload,
+      position: validPosition(payload.position),
+    };
+  }
+  return payload;
+};
 
 const reducer = produce((draft: Draft<CardsState>, action: CardsAction) => {
   switch (action.type) {
-    case CardsActionType.addCard:
-      draft.cards.push(action.payload);
+    case CardsActionType.addCard: {
+      const payload = validPayload(action.payload);
+      draft.cards.push(payload);
       break;
+    }
+    case CardsActionType.moveCard: {
+      const payload = validPayload(action.payload);
+      const { id, position } = payload;
+      const card = draft.cards.find((item) => item.id === id);
+      Object.assign(card, { position });
+      break;
+    }
   }
 });
 
-const dispatch = (action: CardsAction) => {
-  state = reducer(state, action);
-  setState(state);
+const {
+  getState: getCardsState,
+  dispatch,
+  Provider: CardsProvider,
+  useContext: useCardsContext,
+} = modelHelper<CardsState, CardsAction>({
+  getInitialState,
+  reducer,
+});
+
+export { getCardsState, CardsProvider, useCardsContext };
+
+export const addCard = (payload: AddCardAction['payload']): void => {
+  dispatch({ type: CardsActionType.addCard, payload });
 };
 
-export const addCard = (card: Card): void => {
-  dispatch({ type: CardsActionType.addCard, payload: card });
+export const moveCard = (payload: MoveCardAction['payload']): void => {
+  dispatch({ type: CardsActionType.moveCard, payload });
 };
-
-const useCards = () => {
-  const [_state, _setState] = useState(state);
-
-  setState = _setState;
-
-  return { ..._state };
-};
-
-const [CardsProvider, useCardsContext] = constate(useCards);
-
-export { CardsProvider, useCardsContext };
