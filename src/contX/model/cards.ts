@@ -1,6 +1,6 @@
 import constate from 'constate';
 import produce, { Draft } from 'immer';
-import { useCallback, useReducer } from 'react';
+import { useState } from 'react';
 import { BaseAction } from './base';
 
 export interface Card {
@@ -27,21 +27,39 @@ interface CardsState {
 
 export type CardsAction = AddCardAction; // TODO more actions
 
+export const getInitialState = (): CardsState => ({
+  cards: [],
+});
+
+let state = getInitialState();
+
+export const getState = (): CardsState => state;
+
+let setState: React.Dispatch<React.SetStateAction<CardsState>>;
+
+const reducer = produce((draft: Draft<CardsState>, action: CardsAction) => {
+  switch (action.type) {
+    case CardsActionType.addCard:
+      draft.cards.push(action.payload);
+      break;
+  }
+});
+
+const dispatch = (action: CardsAction) => {
+  state = reducer(state, action);
+  setState(state);
+};
+
+export const addCard = (card: Card): void => {
+  dispatch({ type: CardsActionType.addCard, payload: card });
+};
+
 const useCards = () => {
-  const reducer = produce((draft: Draft<CardsState>, action: CardsAction) => {
-    switch (action.type) {
-      case CardsActionType.addCard:
-        draft.cards.push(action.payload);
-        break;
-    }
-  });
-  const [state, dispatch] = useReducer(reducer, { cards: [] });
+  const [_state, _setState] = useState(state);
 
-  const addCard = useCallback((card: Card) => {
-    dispatch({ type: CardsActionType.addCard, payload: card });
-  }, []);
+  setState = _setState;
 
-  return { ...state, addCard };
+  return { ..._state };
 };
 
 const [CardsProvider, useCardsContext] = constate(useCards);
