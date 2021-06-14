@@ -13,18 +13,18 @@ export interface Card {
 
 enum CardsActionType {
   addCard = 'addCard',
-  moveCard = 'moveCard',
+  setCard = 'setCard',
 }
 
 interface AddCardAction {
   type: CardsActionType.addCard;
   payload: Card;
 }
-interface MoveCardAction {
-  type: CardsActionType.moveCard;
-  payload: Pick<Card, 'id' | 'position'>;
+interface SetCardAction {
+  type: CardsActionType.setCard;
+  payload: Pick<Card, 'id'> & Partial<Card>;
 }
-type CardsAction = AddCardAction | MoveCardAction; // TODO more actions
+type CardsAction = AddCardAction | SetCardAction; // TODO more actions
 
 interface CardsState {
   cards: Card[];
@@ -58,11 +58,11 @@ const reducer = produce((draft: Draft<CardsState>, action: CardsAction) => {
       draft.cards.push(payload);
       break;
     }
-    case CardsActionType.moveCard: {
+    case CardsActionType.setCard: {
       const payload = validPayload(action.payload);
-      const { id, position } = payload;
+      const { id, ...patch } = payload;
       const card = draft.cards.find((item) => item.id === id);
-      Object.assign(card, { position });
+      Object.assign(card, patch);
       break;
     }
   }
@@ -84,6 +84,6 @@ export const addCard = (payload: AddCardAction['payload']): void => {
   dispatch({ type: CardsActionType.addCard, payload });
 };
 
-export const moveCard = (payload: MoveCardAction['payload']): void => {
-  dispatch({ type: CardsActionType.moveCard, payload });
+export const setCard = (payload: SetCardAction['payload']): void => {
+  dispatch({ type: CardsActionType.setCard, payload });
 };

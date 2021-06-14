@@ -1,3 +1,13 @@
+TODO
+
+- [ ] z-index & lastModified
+- [x] auto-height
+- [x] title input
+- [x] dragging
+- [x] modelHelper
+
+---
+
 - [node-ts-demo](https://github.com/fritx/node-ts-demo)
 - [koa-ts-demo](https://github.com/fritx/koa-ts-demo)
 - [react-ts-demo](https://github.com/fritx/react-ts-demo)
